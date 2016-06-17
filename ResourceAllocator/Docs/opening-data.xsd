@@ -1,0 +1,30 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="resource-data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="record" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:short" name="RequestID"/>
+              <xs:element type="xs:string" name="ClientKey"/>
+              <xs:element type="xs:string" name="ProjectKey"/>
+              <xs:element type="xs:string" name="CustomerName"/>
+              <xs:element type="xs:string" name="ProjectName"/>
+              <xs:element type="xs:string" name="IsKeyProject"/>
+              <xs:element type="xs:string" name="ProjectDomain" minOccurs="0"/>
+              <xs:element type="xs:string" name="ProjectStartDate"/>
+              <xs:element type="xs:string" name="ProjectEndDate"/>
+              <xs:element type="xs:string" name="Role"/>
+              <xs:element type="xs:string" name="IsKeyPosition"/>
+              <xs:element type="xs:byte" name="YearsOfExperience"/>
+              <xs:element type="xs:string" name="MandatorySkills"/>
+              <xs:element type="xs:string" name="ClientCommunication"/>
+              <xs:element type="xs:string" name="RequestStartDate"/>
+              <xs:element type="xs:string" name="AllocationEndDate"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
