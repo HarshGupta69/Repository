@@ -18,7 +18,7 @@ public class NagarroResourceAllocatorMain {
 
     public static Map<String, List<ResourceInformationVO>> resourceInfoMap = null;
 
-    public static List<ProjectRequirementVO> projectReqList = null;
+    public static Map<String, List<ProjectRequirementVO>> projectReqMap = null;
 
     /**
 	 * 
@@ -38,11 +38,13 @@ public class NagarroResourceAllocatorMain {
         System.out.println("Total Time Taking to Read Resource Information in Milli Sec: "
                 + (endTimeResourceInfo - startTimeResourceInfo));
         long startTimeProjectReq = System.currentTimeMillis();
-        projectReqList = XMLFileParser.getProjectRequirement();
+        projectReqMap = XMLFileParser.getProjectRequirement();
         long endTimeProjectReq = System.currentTimeMillis();
-        System.out.println("Total Project Requirement Size: " + projectReqList.size());
+        System.out.println("Total Project Requirement Size: " + projectReqMap.size());
         System.out.println("Total Time Taking to Read Project Requirement in Milli Sec: "
                 + (endTimeProjectReq - startTimeProjectReq));
+//        System.out.println(resourceInfoMap);
+//        System.out.println(projectReqMap);
     }
 
 }

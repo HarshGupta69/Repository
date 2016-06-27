@@ -6,7 +6,9 @@ package com.nagarro.resource.allocator.parse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,8 +36,8 @@ public class ParseProjectInformation {
 
     }
 
-    public List<ProjectRequirementVO> parseProjectRequirement() {
-        List<ProjectRequirementVO> projectReqVOList = new ArrayList<ProjectRequirementVO>();
+    public Map<String, List<ProjectRequirementVO>> parseProjectRequirement() {
+        Map<String, List<ProjectRequirementVO>> projectReqMap =  new HashMap<String, List<ProjectRequirementVO>>();
         try {
             File xmlFile = new File("openings.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -90,13 +92,23 @@ public class ParseProjectInformation {
                     projectReqVO.setAllocationEndDate(null != eElement.getElementsByTagName("AllocationEndDate")
                             .item(0) ? NagarroResourceAllocatorUtility.stringToDate(eElement
                             .getElementsByTagName("AllocationEndDate").item(0).getTextContent()) : null);
-                    projectReqVOList.add(projectReqVO);
+                    projectReqVO.setResourceInformationVOs();
+                    addProjectReqToMapByProject(projectReqMap, projectReqVO);
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-        return projectReqVOList;
+        return projectReqMap;
+    }
+
+    private void addProjectReqToMapByProject(Map<String, List<ProjectRequirementVO>> projectReqVOMap,
+            ProjectRequirementVO projectRequirementVO) {
+        if (!projectReqVOMap.containsKey(projectRequirementVO.getProjectName())) {
+            List<ProjectRequirementVO> projectRequirementVOs = new ArrayList<ProjectRequirementVO>();
+            projectReqVOMap.put(projectRequirementVO.getProjectName(), projectRequirementVOs);
+        }
+        projectReqVOMap.get(projectRequirementVO.getProjectName()).add(projectRequirementVO);
     }
 
 }

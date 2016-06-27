@@ -3,7 +3,6 @@
  */
 package com.nagarro.resource.allocator.vo;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class ProjectRequirementVO {
 
     }
 
+    private String requestID;
     private String clientKey;
     private String projectKey;
     private String customerName;
@@ -30,8 +30,29 @@ public class ProjectRequirementVO {
     private String projectDomain;
     private Date projectStartDate;
     private Date projectEndDate;
-    private List<ResourceRequirementVO> resourceRequirementVOs = null;
+    private String role;
+    private String isKeyPosition;
+    private float yearsOfExperience;
+    private List<String> mandatorySkills;
+    private String clientCommunication;
+    private Date requestStartDate;
+    private Date allocationEndDate;
     private List<ResourceInformationVO> resourceInformationVOs = null;
+
+    /**
+     * @return the requestID
+     */
+    public String getRequestID() {
+        return requestID;
+    }
+
+    /**
+     * @param requestID
+     *            the requestID to set
+     */
+    public void setRequestID(String requestID) {
+        this.requestID = requestID;
+    }
 
     /**
      * @return the clientKey
@@ -154,6 +175,111 @@ public class ProjectRequirementVO {
     }
 
     /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role
+     *            the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    /**
+     * @return the isKeyPosition
+     */
+    public String getIsKeyPosition() {
+        return isKeyPosition;
+    }
+
+    /**
+     * @param isKeyPosition
+     *            the isKeyPosition to set
+     */
+    public void setIsKeyPosition(String isKeyPosition) {
+        this.isKeyPosition = isKeyPosition;
+    }
+
+    /**
+     * @return the yearsOfExperience
+     */
+    public float getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    /**
+     * @param yearsOfExperience
+     *            the yearsOfExperience to set
+     */
+    public void setYearsOfExperience(float yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    /**
+     * @return the mandatorySkills
+     */
+    public List<String> getMandatorySkills() {
+        return mandatorySkills;
+    }
+
+    /**
+     * @param mandatorySkills
+     *            the mandatorySkills to set
+     */
+    public void setMandatorySkills(List<String> mandatorySkills) {
+        this.mandatorySkills = mandatorySkills;
+    }
+
+    /**
+     * @return the clientCommunication
+     */
+    public String getClientCommunication() {
+        return clientCommunication;
+    }
+
+    /**
+     * @param clientCommunication
+     *            the clientCommunication to set
+     */
+    public void setClientCommunication(String clientCommunication) {
+        this.clientCommunication = clientCommunication;
+    }
+
+    /**
+     * @return the requestStartDate
+     */
+    public Date getRequestStartDate() {
+        return requestStartDate;
+    }
+
+    /**
+     * @param requestStartDate
+     *            the requestStartDate to set
+     */
+    public void setRequestStartDate(Date requestStartDate) {
+        this.requestStartDate = requestStartDate;
+    }
+
+    /**
+     * @return the allocationEndDate
+     */
+    public Date getAllocationEndDate() {
+        return allocationEndDate;
+    }
+
+    /**
+     * @param allocationEndDate
+     *            the allocationEndDate to set
+     */
+    public void setAllocationEndDate(Date allocationEndDate) {
+        this.allocationEndDate = allocationEndDate;
+    }
+
+    /**
      * @return the resourceInformationVOs
      */
     public List<ResourceInformationVO> getResourceInformationVOs() {
@@ -165,21 +291,22 @@ public class ProjectRequirementVO {
      *            the resourceInformationVOs to set
      */
     public void setResourceInformationVOs() {
-        this.resourceInformationVOs = new ArrayList<ResourceInformationVO>();
-        for (ResourceRequirementVO resourceRequirementVO : resourceRequirementVOs) {
-            List<ResourceInformationVO> resourceInformationVOs =
-                    NagarroResourceAllocatorUtility.getResourceInformationVOBySkillSet(resourceRequirementVO
-                            .getMandatorySkills());
-        }
-        for (ResourceInformationVO resourceInformationVO : resourceInformationVOs) {
-            if (resourceInformationVO.getSkills().containsAll(mandatorySkills)
-                    && 0 >= resourceInformationVO.getAvailableFromDate().compareTo(this.requestStartDate)) {
-                ResourceInformationVO informationVO = new ResourceInformationVO(resourceInformationVO);
-                informationVO.addPoints(1);
-                informationVO.updatePoints(this);
-                this.resourceInformationVOs.add(informationVO);
-            }
-        }
+        this.resourceInformationVOs = NagarroResourceAllocatorUtility.getResourceInformationVOBySkillSet(this);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ProjectRequirementVO [requestID=" + requestID + ", clientKey=" + clientKey + ", projectKey="
+                + projectKey + ", customerName=" + customerName + ", projectName=" + projectName + ", isKeyProject="
+                + isKeyProject + ", projectDomain=" + projectDomain + ", projectStartDate=" + projectStartDate
+                + ", projectEndDate=" + projectEndDate + ", role=" + role + ", isKeyPosition=" + isKeyPosition
+                + ", yearsOfExperience=" + yearsOfExperience + ", mandatorySkills=" + mandatorySkills
+                + ", clientCommunication=" + clientCommunication + ", requestStartDate=" + requestStartDate
+                + ", allocationEndDate=" + allocationEndDate + ", resourceInformationVOs=" + resourceInformationVOs
+                + "]";
     }
 
 }

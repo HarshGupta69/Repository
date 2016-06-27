@@ -27,7 +27,7 @@ public class XMLFileParser {
         return parseResInfo.parseResourceInformation();
     }
 
-    public static List<ProjectRequirementVO> getProjectRequirement() {
+    public static Map<String, List<ProjectRequirementVO>> getProjectRequirement() {
         ParseProjectInformation parseProjInfo = new ParseProjectInformation();
         return parseProjInfo.parseProjectRequirement();
     }

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.nagarro.resource.allocator.main.NagarroResourceAllocatorMain;
+import com.nagarro.resource.allocator.vo.ProjectRequirementVO;
 import com.nagarro.resource.allocator.vo.ResourceInformationVO;
 
 /**
@@ -54,13 +55,23 @@ public class NagarroResourceAllocatorUtility {
         }
         return floatN;
     }
-    
-    public static List<ResourceInformationVO> getResourceInformationVOBySkillSet(List<String> skillSet){
+
+    public static List<ResourceInformationVO> getResourceInformationVOBySkillSet(
+            ProjectRequirementVO projectRequirementVO) {
         List<ResourceInformationVO> resourceInformationVOs = new ArrayList<ResourceInformationVO>();
-        for(String skill : skillSet){
-            for(ResourceInformationVO resourceInformationVO : NagarroResourceAllocatorMain.resourceInfoMap.get(skill)){
-                if(resourceInformationVO.getSkills().containsAll(skillSet) && !resourceInformationVOs.contains(resourceInformationVO)){
-                    resourceInformationVOs.add(resourceInformationVO);
+        for (String skill : projectRequirementVO.getMandatorySkills()) {
+            if (null != NagarroResourceAllocatorMain.resourceInfoMap.get(skill)) {
+                for (ResourceInformationVO resourceInformationVO : NagarroResourceAllocatorMain.resourceInfoMap
+                        .get(skill)) {
+                    if (resourceInformationVO.getSkills().containsAll(projectRequirementVO.getMandatorySkills())
+                            && 0 < resourceInformationVO.getAvailableFromDate().compareTo(
+                                    projectRequirementVO.getRequestStartDate())
+                            && !resourceInformationVOs.contains(resourceInformationVO)) {
+                        ResourceInformationVO informationVO = new ResourceInformationVO(resourceInformationVO);
+                        informationVO.addPoints(1);
+                        informationVO.updatePoints(projectRequirementVO);
+                        resourceInformationVOs.add(informationVO);
+                    }
                 }
             }
         }

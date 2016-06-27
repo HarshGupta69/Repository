@@ -241,16 +241,28 @@ public class ResourceInformationVO {
         } else if (rating.equalsIgnoreCase(AppConstants.A)) {
             addPoints(0.1);
         }
-        if (domainExperience.equalsIgnoreCase(projectRequirementVO.getProjectDomain())) {
+        if (null != domainExperience && domainExperience.equalsIgnoreCase(projectRequirementVO.getProjectDomain())) {
             addPoints(0.2);
-            if (previousCustomerExperience.contains(projectRequirementVO.getCustomerName())) {
+            if (null != previousCustomerExperience
+                    && previousCustomerExperience.contains(projectRequirementVO.getCustomerName())) {
                 addPoints(0.3);
             }
         }
         if (yearsOfExperience > projectRequirementVO.getYearsOfExperience()) {
             addPoints((yearsOfExperience - projectRequirementVO.getYearsOfExperience()) * 0.05);
         }
+    }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ResourceInformationVO [employeeId=" + employeeId + ", doj=" + doj + ", skills=" + skills
+                + ", domainExperience=" + domainExperience + ", rating=" + rating + ", communicationsRating="
+                + communicationsRating + ", nagp=" + nagp + ", yearsOfExperience=" + yearsOfExperience
+                + ", currentRole=" + currentRole + ", availableFromDate=" + availableFromDate
+                + ", previousCustomerExperience=" + previousCustomerExperience + ", points=" + points + "]";
     }
 
 }

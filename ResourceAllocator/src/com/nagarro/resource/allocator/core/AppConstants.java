@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
  */
 public class AppConstants {
 
-    public final static SimpleDateFormat FORMATTOR = new SimpleDateFormat("dd-MMM-yyyy");
+    public final static SimpleDateFormat FORMATTOR = new SimpleDateFormat("dd-mm-yyyy");
     
     public final static String BLANK = "";
     
