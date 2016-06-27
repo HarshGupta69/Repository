@@ -3,6 +3,10 @@
  */
 package com.nagarro.resource.allocator.vo;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author harshitgupta
  *
@@ -23,15 +27,16 @@ public class ProjectRequirementVO {
     private String projectName;
     private String isKeyProject;
     private String projectDomain;
-    private String projectStartDate;
-    private String projectEndDate;
+    private Date projectStartDate;
+    private Date projectEndDate;
     private String role;
     private String isKeyPosition;
-    private String yearsOfExperience;
+    private float yearsOfExperience;
     private String mandatorySkills;
     private String clientCommunication;
-    private String requestStartDate;
-    private String allocationEndDate;
+    private Date requestStartDate;
+    private Date allocationEndDate;
+    private List<ResourceInformationVO> resourceInformationVOs = null;
 
     /**
      * @return the requestID
@@ -141,7 +146,7 @@ public class ProjectRequirementVO {
     /**
      * @return the projectStartDate
      */
-    public String getProjectStartDate() {
+    public Date getProjectStartDate() {
         return projectStartDate;
     }
 
@@ -149,14 +154,14 @@ public class ProjectRequirementVO {
      * @param projectStartDate
      *            the projectStartDate to set
      */
-    public void setProjectStartDate(String projectStartDate) {
+    public void setProjectStartDate(Date projectStartDate) {
         this.projectStartDate = projectStartDate;
     }
 
     /**
      * @return the projectEndDate
      */
-    public String getProjectEndDate() {
+    public Date getProjectEndDate() {
         return projectEndDate;
     }
 
@@ -164,7 +169,7 @@ public class ProjectRequirementVO {
      * @param projectEndDate
      *            the projectEndDate to set
      */
-    public void setProjectEndDate(String projectEndDate) {
+    public void setProjectEndDate(Date projectEndDate) {
         this.projectEndDate = projectEndDate;
     }
 
@@ -201,7 +206,7 @@ public class ProjectRequirementVO {
     /**
      * @return the yearsOfExperience
      */
-    public String getYearsOfExperience() {
+    public float getYearsOfExperience() {
         return yearsOfExperience;
     }
 
@@ -209,7 +214,7 @@ public class ProjectRequirementVO {
      * @param yearsOfExperience
      *            the yearsOfExperience to set
      */
-    public void setYearsOfExperience(String yearsOfExperience) {
+    public void setYearsOfExperience(float yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
 
@@ -246,7 +251,7 @@ public class ProjectRequirementVO {
     /**
      * @return the requestStartDate
      */
-    public String getRequestStartDate() {
+    public Date getRequestStartDate() {
         return requestStartDate;
     }
 
@@ -254,14 +259,14 @@ public class ProjectRequirementVO {
      * @param requestStartDate
      *            the requestStartDate to set
      */
-    public void setRequestStartDate(String requestStartDate) {
+    public void setRequestStartDate(Date requestStartDate) {
         this.requestStartDate = requestStartDate;
     }
 
     /**
      * @return the allocationEndDate
      */
-    public String getAllocationEndDate() {
+    public Date getAllocationEndDate() {
         return allocationEndDate;
     }
 
@@ -269,8 +274,31 @@ public class ProjectRequirementVO {
      * @param allocationEndDate
      *            the allocationEndDate to set
      */
-    public void setAllocationEndDate(String allocationEndDate) {
+    public void setAllocationEndDate(Date allocationEndDate) {
         this.allocationEndDate = allocationEndDate;
+    }
+
+    /**
+     * @return the resourceInformationVOs
+     */
+    public List<ResourceInformationVO> getResourceInformationVOs() {
+        return resourceInformationVOs;
+    }
+
+    /**
+     * @param resourceInformationVOs
+     *            the resourceInformationVOs to set
+     */
+    public void setResourceInformationVOs(List<ResourceInformationVO> resourceInformationVOs) {
+        this.resourceInformationVOs = new ArrayList<ResourceInformationVO>();
+        for (ResourceInformationVO resourceInformationVO : resourceInformationVOs) {
+            if (-1 != this.mandatorySkills.indexOf(resourceInformationVO.getSkills())
+                    && 0 >= resourceInformationVO.getAvailableFromDate().compareTo(this.requestStartDate)) {
+                ResourceInformationVO informationVO = new ResourceInformationVO(resourceInformationVO);
+                informationVO.addPoints(1);
+                this.resourceInformationVOs.add(informationVO);
+            }
+        }
     }
 
 }

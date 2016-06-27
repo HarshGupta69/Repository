@@ -3,6 +3,10 @@
  */
 package com.nagarro.resource.allocator.vo;
 
+import java.util.Date;
+
+import com.nagarro.resource.allocator.core.AppConstants;
+
 /**
  * @author harshitgupta
  *
@@ -10,22 +14,37 @@ package com.nagarro.resource.allocator.vo;
 public class ResourceInformationVO {
 
     private String employeeId;
-    private String doj;
+    private Date doj;
     private String skills;
     private String domainExperience;
     private String rating;
     private String communicationsRating;
     private String nagp;
-    private String yearsOfExperience;
+    private float yearsOfExperience;
     private String currentRole;
-    private String availableFromDate;
+    private Date availableFromDate;
     private String previousCustomerExperience;
+    private float points;
 
     /**
 	 * 
 	 */
     public ResourceInformationVO() {
 
+    }
+
+    public ResourceInformationVO(ResourceInformationVO resourceInformationVO) {
+        this.employeeId = resourceInformationVO.employeeId;
+        this.doj = resourceInformationVO.doj;
+        this.skills = resourceInformationVO.skills;
+        this.domainExperience = resourceInformationVO.domainExperience;
+        this.rating = resourceInformationVO.rating;
+        this.communicationsRating = resourceInformationVO.communicationsRating;
+        this.nagp = resourceInformationVO.nagp;
+        this.yearsOfExperience = resourceInformationVO.yearsOfExperience;
+        this.currentRole = resourceInformationVO.currentRole;
+        this.availableFromDate = resourceInformationVO.availableFromDate;
+        this.previousCustomerExperience = resourceInformationVO.previousCustomerExperience;
     }
 
     /**
@@ -46,7 +65,7 @@ public class ResourceInformationVO {
     /**
      * @return the doj
      */
-    public String getDoj() {
+    public Date getDoj() {
         return doj;
     }
 
@@ -54,7 +73,7 @@ public class ResourceInformationVO {
      * @param doj
      *            the doj to set
      */
-    public void setDoj(String doj) {
+    public void setDoj(Date doj) {
         this.doj = doj;
     }
 
@@ -136,7 +155,7 @@ public class ResourceInformationVO {
     /**
      * @return the yearsOfExperience
      */
-    public String getYearsOfExperience() {
+    public float getYearsOfExperience() {
         return yearsOfExperience;
     }
 
@@ -144,7 +163,7 @@ public class ResourceInformationVO {
      * @param yearsOfExperience
      *            the yearsOfExperience to set
      */
-    public void setYearsOfExperience(String yearsOfExperience) {
+    public void setYearsOfExperience(float yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
 
@@ -166,7 +185,7 @@ public class ResourceInformationVO {
     /**
      * @return the availableFromDate
      */
-    public String getAvailableFromDate() {
+    public Date getAvailableFromDate() {
         return availableFromDate;
     }
 
@@ -174,7 +193,7 @@ public class ResourceInformationVO {
      * @param availableFromDate
      *            the availableFromDate to set
      */
-    public void setAvailableFromDate(String availableFromDate) {
+    public void setAvailableFromDate(Date availableFromDate) {
         this.availableFromDate = availableFromDate;
     }
 
@@ -191,6 +210,43 @@ public class ResourceInformationVO {
      */
     public void setPreviousCustomerExperience(String previousCustomerExperience) {
         this.previousCustomerExperience = previousCustomerExperience;
+    }
+
+    /**
+     * @return the points
+     */
+    public float getPoints() {
+        return points;
+    }
+
+    /**
+     * @param points
+     *            the points to set
+     */
+    public void setPoints(float points) {
+        this.points = points;
+    }
+
+    public void addPoints(double d) {
+        this.points += d;
+    }
+
+    public void updatePoints(ProjectRequirementVO projectRequirementVO) {
+        if (nagp.equalsIgnoreCase(AppConstants.Y)) {
+            addPoints(0.3);
+        }
+        if (rating.equalsIgnoreCase(AppConstants.A_PLUS)) {
+            addPoints(0.2);
+        } else if (rating.equalsIgnoreCase(AppConstants.A)) {
+            addPoints(0.1);
+        }
+        if (domainExperience.equalsIgnoreCase(projectRequirementVO.getProjectDomain())) {
+            addPoints(0.2);
+            if (-1 != projectRequirementVO.getCustomerName().indexOf(previousCustomerExperience)) {
+                addPoints(0.3);
+            }
+        }
+
     }
 
 }

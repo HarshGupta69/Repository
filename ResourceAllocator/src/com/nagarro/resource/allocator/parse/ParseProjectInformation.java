@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.nagarro.resource.allocator.core.NagarroResourceAllocatorUtility;
 import com.nagarro.resource.allocator.vo.ProjectRequirementVO;
 
 /**
@@ -46,7 +47,7 @@ public class ParseProjectInformation {
             System.out.println("----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-              //  System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                // System.out.println("\nCurrent Element :" + nNode.getNodeName());
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     ProjectRequirementVO projectReqVO = new ProjectRequirementVO();
@@ -64,27 +65,25 @@ public class ParseProjectInformation {
                             ? eElement.getElementsByTagName("IsKeyProject").item(0).getTextContent() : null);
                     projectReqVO.setProjectDomain(null != eElement.getElementsByTagName("ProjectDomain").item(0)
                             ? eElement.getElementsByTagName("ProjectDomain").item(0).getTextContent() : null);
-                    projectReqVO.setProjectStartDate(null != eElement.getElementsByTagName("ProjectStartDate").item(0)
-                            ? eElement.getElementsByTagName("ProjectStartDate").item(0).getTextContent() : null);
-                    projectReqVO.setProjectEndDate(null != eElement.getElementsByTagName("ProjectEndDate").item(0)
-                            ? eElement.getElementsByTagName("ProjectEndDate").item(0).getTextContent() : null);
+                    projectReqVO.setProjectStartDate(NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("ProjectStartDate").item(0).getTextContent()));
+                    projectReqVO.setProjectEndDate(NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("ProjectEndDate").item(0).getTextContent()));
                     projectReqVO.setRole(null != eElement.getElementsByTagName("Role").item(0) ? eElement
                             .getElementsByTagName("Role").item(0).getTextContent() : null);
                     projectReqVO.setIsKeyPosition(null != eElement.getElementsByTagName("IsKeyPosition").item(0)
                             ? eElement.getElementsByTagName("IsKeyPosition").item(0).getTextContent() : null);
-                    projectReqVO.setYearsOfExperience(null != eElement.getElementsByTagName("YearsOfExperience")
-                            .item(0) ? eElement.getElementsByTagName("YearsOfExperience").item(0).getTextContent()
-                            : null);
+                    projectReqVO.setYearsOfExperience(NagarroResourceAllocatorUtility.stringToFloat(eElement
+                            .getElementsByTagName("YearsOfExperience").item(0).getTextContent()));
                     projectReqVO.setMandatorySkills(null != eElement.getElementsByTagName("MandatorySkills").item(0)
                             ? eElement.getElementsByTagName("MandatorySkills").item(0).getTextContent() : null);
                     projectReqVO.setClientCommunication(null != eElement.getElementsByTagName("ClientCommunication")
                             .item(0) ? eElement.getElementsByTagName("ClientCommunication").item(0).getTextContent()
                             : null);
-                    projectReqVO.setRequestStartDate(null != eElement.getElementsByTagName("RequestStartDate").item(0)
-                            ? eElement.getElementsByTagName("RequestStartDate").item(0).getTextContent() : null);
-                    projectReqVO.setAllocationEndDate(null != eElement.getElementsByTagName("AllocationEndDate")
-                            .item(0) ? eElement.getElementsByTagName("AllocationEndDate").item(0).getTextContent()
-                            : null);
+                    projectReqVO.setRequestStartDate(NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("RequestStartDate").item(0).getTextContent()));
+                    projectReqVO.setAllocationEndDate(NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("AllocationEndDate").item(0).getTextContent()));
                     projectReqVOList.add(projectReqVO);
                 }
             }

@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.nagarro.resource.allocator.core.NagarroResourceAllocatorUtility;
 import com.nagarro.resource.allocator.vo.ResourceInformationVO;
 
 /**
@@ -46,14 +47,14 @@ public class ParseResourceInformation {
             System.out.println("----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-             //   System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                // System.out.println("\nCurrent Element :" + nNode.getNodeName());
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     ResourceInformationVO resourceInfoVO = new ResourceInformationVO();
                     resourceInfoVO.setEmployeeId(null != eElement.getElementsByTagName("EmployeeID").item(0) ? eElement
                             .getElementsByTagName("EmployeeID").item(0).getTextContent() : null);
-                    resourceInfoVO.setDoj(null != eElement.getElementsByTagName("DOJ").item(0) ? eElement
-                            .getElementsByTagName("DOJ").item(0).getTextContent() : null);
+                    resourceInfoVO.setDoj(NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("DOJ").item(0).getTextContent()));
                     resourceInfoVO.setSkills(null != eElement.getElementsByTagName("Skills").item(0) ? eElement
                             .getElementsByTagName("Skills").item(0).getTextContent() : null);
                     resourceInfoVO.setDomainExperience(null != eElement.getElementsByTagName("DomainExperience")
@@ -66,17 +67,15 @@ public class ParseResourceInformation {
                             .getElementsByTagName("CommunicationsRating").item(0).getTextContent() : null);
                     resourceInfoVO.setNagp(null != eElement.getElementsByTagName("NAGP").item(0) ? eElement
                             .getElementsByTagName("NAGP").item(0).getTextContent() : null);
-                    resourceInfoVO.setYearsOfExperience(null != eElement.getElementsByTagName("YearsOfExperience")
-                            .item(0) ? eElement.getElementsByTagName("YearsOfExperience").item(0).getTextContent()
-                            : null);
+                    resourceInfoVO.setYearsOfExperience(NagarroResourceAllocatorUtility.stringToFloat(eElement
+                            .getElementsByTagName("YearsOfExperience").item(0).getTextContent()));
                     resourceInfoVO.setCurrentRole(null != eElement.getElementsByTagName("CurrentRole").item(0)
                             ? eElement.getElementsByTagName("CurrentRole").item(0).getTextContent() : null);
                     resourceInfoVO.setPreviousCustomerExperience(null != eElement.getElementsByTagName(
                             "PreviousCustomerExperience").item(0) ? eElement
                             .getElementsByTagName("PreviousCustomerExperience").item(0).getTextContent() : null);
-                    resourceInfoVO.setAvailableFromDate(null != eElement.getElementsByTagName("AvailableFromDate")
-                            .item(0) ? eElement.getElementsByTagName("AvailableFromDate").item(0).getTextContent()
-                            : null);
+                    resourceInfoVO.setAvailableFromDate(NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("AvailableFromDate").item(0).getTextContent()));
                     resourceInfoVOList.add(resourceInfoVO);
                 }
             }
