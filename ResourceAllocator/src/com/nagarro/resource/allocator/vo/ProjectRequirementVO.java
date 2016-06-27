@@ -296,6 +296,7 @@ public class ProjectRequirementVO {
                     && 0 >= resourceInformationVO.getAvailableFromDate().compareTo(this.requestStartDate)) {
                 ResourceInformationVO informationVO = new ResourceInformationVO(resourceInformationVO);
                 informationVO.addPoints(1);
+                informationVO.updatePoints(this);
                 this.resourceInformationVOs.add(informationVO);
             }
         }

@@ -24,7 +24,7 @@ public class ResourceInformationVO {
     private float yearsOfExperience;
     private String currentRole;
     private Date availableFromDate;
-    private String previousCustomerExperience;
+    private List<String> previousCustomerExperience;
     private float points;
 
     /**
@@ -201,15 +201,15 @@ public class ResourceInformationVO {
     /**
      * @return the previousCustomerExperience
      */
-    public String getPreviousCustomerExperience() {
+    public List<String> getPreviousCustomerExperience() {
         return previousCustomerExperience;
     }
 
     /**
-     * @param previousCustomerExperience
+     * @param list
      *            the previousCustomerExperience to set
      */
-    public void setPreviousCustomerExperience(String previousCustomerExperience) {
+    public void setPreviousCustomerExperience(List<String> previousCustomerExperience) {
         this.previousCustomerExperience = previousCustomerExperience;
     }
 
@@ -243,9 +243,12 @@ public class ResourceInformationVO {
         }
         if (domainExperience.equalsIgnoreCase(projectRequirementVO.getProjectDomain())) {
             addPoints(0.2);
-            if (-1 != projectRequirementVO.getCustomerName().indexOf(previousCustomerExperience)) {
+            if (previousCustomerExperience.contains(projectRequirementVO.getCustomerName())) {
                 addPoints(0.3);
             }
+        }
+        if (yearsOfExperience > projectRequirementVO.getYearsOfExperience()) {
+            addPoints((yearsOfExperience - projectRequirementVO.getYearsOfExperience()) * 0.05);
         }
 
     }

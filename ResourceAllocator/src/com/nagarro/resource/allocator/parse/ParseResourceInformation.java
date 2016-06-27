@@ -75,8 +75,9 @@ public class ParseResourceInformation {
                     resourceInfoVO.setCurrentRole(null != eElement.getElementsByTagName("CurrentRole").item(0)
                             ? eElement.getElementsByTagName("CurrentRole").item(0).getTextContent() : null);
                     resourceInfoVO.setPreviousCustomerExperience(null != eElement.getElementsByTagName(
-                            "PreviousCustomerExperience").item(0) ? eElement
-                            .getElementsByTagName("PreviousCustomerExperience").item(0).getTextContent() : null);
+                            "PreviousCustomerExperience").item(0) ? NagarroResourceAllocatorUtility
+                            .stringToList(eElement.getElementsByTagName("PreviousCustomerExperience").item(0)
+                                    .getTextContent()) : null);
                     resourceInfoVO.setAvailableFromDate(null != eElement.getElementsByTagName("AvailableFromDate")
                             .item(0) ? NagarroResourceAllocatorUtility.stringToDate(eElement
                             .getElementsByTagName("AvailableFromDate").item(0).getTextContent()) : null);
