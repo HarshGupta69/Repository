@@ -6,7 +6,9 @@ package com.nagarro.resource.allocator.parse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,8 +36,8 @@ public class ParseResourceInformation {
 
     }
 
-    public List<ResourceInformationVO> parseResourceInformation() {
-        List<ResourceInformationVO> resourceInfoVOList = new ArrayList<ResourceInformationVO>();
+    public Map<String, List<ResourceInformationVO>> parseResourceInformation() {
+        Map<String, List<ResourceInformationVO>> resourceInfoVOMap = new HashMap<String, List<ResourceInformationVO>>();
         try {
             File xmlFile = new File("resources.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -81,12 +83,23 @@ public class ParseResourceInformation {
                     resourceInfoVO.setAvailableFromDate(null != eElement.getElementsByTagName("AvailableFromDate")
                             .item(0) ? NagarroResourceAllocatorUtility.stringToDate(eElement
                             .getElementsByTagName("AvailableFromDate").item(0).getTextContent()) : null);
-                    resourceInfoVOList.add(resourceInfoVO);
+                    addResourceToMapBySkill(resourceInfoVOMap, resourceInfoVO);
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-        return resourceInfoVOList;
+        return resourceInfoVOMap;
+    }
+
+    private void addResourceToMapBySkill(Map<String, List<ResourceInformationVO>> resourceInfoVOMap,
+            ResourceInformationVO resourceInformationVO) {
+        for (String skill : resourceInformationVO.getSkills()) {
+            if (!resourceInfoVOMap.containsKey(skill)) {
+                List<ResourceInformationVO> resourceInformationVOs = new ArrayList<ResourceInformationVO>();
+                resourceInfoVOMap.put(skill, resourceInformationVOs);
+            }
+            resourceInfoVOMap.get(skill).add(resourceInformationVO);
+        }
     }
 }
