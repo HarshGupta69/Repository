@@ -4,6 +4,7 @@
 package com.nagarro.resource.allocator.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import com.nagarro.resource.allocator.core.AppConstants;
 
@@ -15,7 +16,7 @@ public class ResourceInformationVO {
 
     private String employeeId;
     private Date doj;
-    private String skills;
+    private List<String> skills;
     private String domainExperience;
     private String rating;
     private String communicationsRating;
@@ -80,7 +81,7 @@ public class ResourceInformationVO {
     /**
      * @return the skills
      */
-    public String getSkills() {
+    public List<String> getSkills() {
         return skills;
     }
 
@@ -88,7 +89,7 @@ public class ResourceInformationVO {
      * @param skills
      *            the skills to set
      */
-    public void setSkills(String skills) {
+    public void setSkills(List<String> skills) {
         this.skills = skills;
     }
 

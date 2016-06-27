@@ -65,25 +65,31 @@ public class ParseProjectInformation {
                             ? eElement.getElementsByTagName("IsKeyProject").item(0).getTextContent() : null);
                     projectReqVO.setProjectDomain(null != eElement.getElementsByTagName("ProjectDomain").item(0)
                             ? eElement.getElementsByTagName("ProjectDomain").item(0).getTextContent() : null);
-                    projectReqVO.setProjectStartDate(NagarroResourceAllocatorUtility.stringToDate(eElement
-                            .getElementsByTagName("ProjectStartDate").item(0).getTextContent()));
-                    projectReqVO.setProjectEndDate(NagarroResourceAllocatorUtility.stringToDate(eElement
-                            .getElementsByTagName("ProjectEndDate").item(0).getTextContent()));
+                    projectReqVO.setProjectStartDate(null != eElement.getElementsByTagName("ProjectStartDate").item(0)
+                            ? NagarroResourceAllocatorUtility.stringToDate(eElement
+                                    .getElementsByTagName("ProjectStartDate").item(0).getTextContent()) : null);
+                    projectReqVO.setProjectEndDate(null != eElement.getElementsByTagName("ProjectEndDate").item(0)
+                            ? NagarroResourceAllocatorUtility.stringToDate(eElement
+                                    .getElementsByTagName("ProjectEndDate").item(0).getTextContent()) : null);
                     projectReqVO.setRole(null != eElement.getElementsByTagName("Role").item(0) ? eElement
                             .getElementsByTagName("Role").item(0).getTextContent() : null);
                     projectReqVO.setIsKeyPosition(null != eElement.getElementsByTagName("IsKeyPosition").item(0)
                             ? eElement.getElementsByTagName("IsKeyPosition").item(0).getTextContent() : null);
-                    projectReqVO.setYearsOfExperience(NagarroResourceAllocatorUtility.stringToFloat(eElement
-                            .getElementsByTagName("YearsOfExperience").item(0).getTextContent()));
+                    projectReqVO.setYearsOfExperience(null != eElement.getElementsByTagName("YearsOfExperience")
+                            .item(0) ? NagarroResourceAllocatorUtility.stringToFloat(eElement
+                            .getElementsByTagName("YearsOfExperience").item(0).getTextContent()) : null);
                     projectReqVO.setMandatorySkills(null != eElement.getElementsByTagName("MandatorySkills").item(0)
-                            ? eElement.getElementsByTagName("MandatorySkills").item(0).getTextContent() : null);
+                            ? NagarroResourceAllocatorUtility.stringToList(eElement
+                                    .getElementsByTagName("MandatorySkills").item(0).getTextContent()) : null);
                     projectReqVO.setClientCommunication(null != eElement.getElementsByTagName("ClientCommunication")
                             .item(0) ? eElement.getElementsByTagName("ClientCommunication").item(0).getTextContent()
                             : null);
-                    projectReqVO.setRequestStartDate(NagarroResourceAllocatorUtility.stringToDate(eElement
-                            .getElementsByTagName("RequestStartDate").item(0).getTextContent()));
-                    projectReqVO.setAllocationEndDate(NagarroResourceAllocatorUtility.stringToDate(eElement
-                            .getElementsByTagName("AllocationEndDate").item(0).getTextContent()));
+                    projectReqVO.setRequestStartDate(null != eElement.getElementsByTagName("RequestStartDate").item(0)
+                            ? NagarroResourceAllocatorUtility.stringToDate(eElement
+                                    .getElementsByTagName("RequestStartDate").item(0).getTextContent()) : null);
+                    projectReqVO.setAllocationEndDate(null != eElement.getElementsByTagName("AllocationEndDate")
+                            .item(0) ? NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("AllocationEndDate").item(0).getTextContent()) : null);
                     projectReqVOList.add(projectReqVO);
                 }
             }

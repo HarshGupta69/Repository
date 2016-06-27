@@ -32,7 +32,7 @@ public class ProjectRequirementVO {
     private String role;
     private String isKeyPosition;
     private float yearsOfExperience;
-    private String mandatorySkills;
+    private List<String> mandatorySkills;
     private String clientCommunication;
     private Date requestStartDate;
     private Date allocationEndDate;
@@ -221,7 +221,7 @@ public class ProjectRequirementVO {
     /**
      * @return the mandatorySkills
      */
-    public String getMandatorySkills() {
+    public List<String> getMandatorySkills() {
         return mandatorySkills;
     }
 
@@ -229,7 +229,7 @@ public class ProjectRequirementVO {
      * @param mandatorySkills
      *            the mandatorySkills to set
      */
-    public void setMandatorySkills(String mandatorySkills) {
+    public void setMandatorySkills(List<String> mandatorySkills) {
         this.mandatorySkills = mandatorySkills;
     }
 
@@ -292,7 +292,7 @@ public class ProjectRequirementVO {
     public void setResourceInformationVOs(List<ResourceInformationVO> resourceInformationVOs) {
         this.resourceInformationVOs = new ArrayList<ResourceInformationVO>();
         for (ResourceInformationVO resourceInformationVO : resourceInformationVOs) {
-            if (-1 != this.mandatorySkills.indexOf(resourceInformationVO.getSkills())
+            if (resourceInformationVO.getSkills().containsAll(mandatorySkills)
                     && 0 >= resourceInformationVO.getAvailableFromDate().compareTo(this.requestStartDate)) {
                 ResourceInformationVO informationVO = new ResourceInformationVO(resourceInformationVO);
                 informationVO.addPoints(1);
