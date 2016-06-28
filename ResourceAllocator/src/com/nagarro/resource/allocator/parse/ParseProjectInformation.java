@@ -5,9 +5,7 @@ package com.nagarro.resource.allocator.parse;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +20,7 @@ import org.xml.sax.SAXException;
 
 import com.nagarro.resource.allocator.core.NagarroResourceAllocatorUtility;
 import com.nagarro.resource.allocator.vo.ProjectRequirementVO;
+import com.nagarro.resource.allocator.vo.ResourceRequirementVO;
 
 /**
  * @author harshitgupta
@@ -36,8 +35,8 @@ public class ParseProjectInformation {
 
     }
 
-    public Map<String, List<ProjectRequirementVO>> parseProjectRequirement() {
-        Map<String, List<ProjectRequirementVO>> projectReqMap = new HashMap<String, List<ProjectRequirementVO>>();
+    public Map<String, ProjectRequirementVO> parseProjectRequirement() {
+        Map<String, ProjectRequirementVO> projectReqMap = new HashMap<String, ProjectRequirementVO>();
         try {
             File xmlFile = new File("openings.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -52,48 +51,10 @@ public class ParseProjectInformation {
                 // System.out.println("\nCurrent Element :" + nNode.getNodeName());
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    ProjectRequirementVO projectReqVO = new ProjectRequirementVO();
-                    projectReqVO.setRequestID(null != eElement.getElementsByTagName("RequestID").item(0) ? eElement
-                            .getElementsByTagName("RequestID").item(0).getTextContent() : null);
-                    projectReqVO.setClientKey(null != eElement.getElementsByTagName("ClientKey").item(0) ? eElement
-                            .getElementsByTagName("ClientKey").item(0).getTextContent() : null);
-                    projectReqVO.setProjectKey(null != eElement.getElementsByTagName("ProjectKey").item(0) ? eElement
-                            .getElementsByTagName("ProjectKey").item(0).getTextContent() : null);
-                    projectReqVO.setCustomerName(null != eElement.getElementsByTagName("CustomerName").item(0)
-                            ? eElement.getElementsByTagName("CustomerName").item(0).getTextContent() : null);
-                    projectReqVO.setProjectName(null != eElement.getElementsByTagName("ProjectName").item(0) ? eElement
-                            .getElementsByTagName("ProjectName").item(0).getTextContent() : null);
-                    projectReqVO.setIsKeyProject(null != eElement.getElementsByTagName("IsKeyProject").item(0)
-                            ? eElement.getElementsByTagName("IsKeyProject").item(0).getTextContent() : null);
-                    projectReqVO.setProjectDomain(null != eElement.getElementsByTagName("ProjectDomain").item(0)
-                            ? eElement.getElementsByTagName("ProjectDomain").item(0).getTextContent() : null);
-                    projectReqVO.setProjectStartDate(null != eElement.getElementsByTagName("ProjectStartDate").item(0)
-                            ? NagarroResourceAllocatorUtility.stringToDate(eElement
-                                    .getElementsByTagName("ProjectStartDate").item(0).getTextContent()) : null);
-                    projectReqVO.setProjectEndDate(null != eElement.getElementsByTagName("ProjectEndDate").item(0)
-                            ? NagarroResourceAllocatorUtility.stringToDate(eElement
-                                    .getElementsByTagName("ProjectEndDate").item(0).getTextContent()) : null);
-                    projectReqVO.setRole(null != eElement.getElementsByTagName("Role").item(0) ? eElement
-                            .getElementsByTagName("Role").item(0).getTextContent() : null);
-                    projectReqVO.setIsKeyPosition(null != eElement.getElementsByTagName("IsKeyPosition").item(0)
-                            ? eElement.getElementsByTagName("IsKeyPosition").item(0).getTextContent() : null);
-                    projectReqVO.setYearsOfExperience(null != eElement.getElementsByTagName("YearsOfExperience")
-                            .item(0) ? NagarroResourceAllocatorUtility.stringToFloat(eElement
-                            .getElementsByTagName("YearsOfExperience").item(0).getTextContent()) : null);
-                    projectReqVO.setMandatorySkills(null != eElement.getElementsByTagName("MandatorySkills").item(0)
-                            ? NagarroResourceAllocatorUtility.stringToList(eElement
-                                    .getElementsByTagName("MandatorySkills").item(0).getTextContent()) : null);
-                    projectReqVO.setClientCommunication(null != eElement.getElementsByTagName("ClientCommunication")
-                            .item(0) ? eElement.getElementsByTagName("ClientCommunication").item(0).getTextContent()
-                            : null);
-                    projectReqVO.setRequestStartDate(null != eElement.getElementsByTagName("RequestStartDate").item(0)
-                            ? NagarroResourceAllocatorUtility.stringToDate(eElement
-                                    .getElementsByTagName("RequestStartDate").item(0).getTextContent()) : null);
-                    projectReqVO.setAllocationEndDate(null != eElement.getElementsByTagName("AllocationEndDate")
-                            .item(0) ? NagarroResourceAllocatorUtility.stringToDate(eElement
-                            .getElementsByTagName("AllocationEndDate").item(0).getTextContent()) : null);
-                    projectReqVO.setResourceInformationVOs();
-                    addProjectReqToMapByProject(projectReqMap, projectReqVO);
+                    ProjectRequirementVO projectRequirementVO =
+                            getProjectRequirementVOByProjectKey(projectReqMap, eElement);
+                    projectRequirementVO.getResourceRequirementVOs().add(
+                            createResourceRequirementVOByElement(eElement, projectRequirementVO));
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
@@ -102,13 +63,65 @@ public class ParseProjectInformation {
         return projectReqMap;
     }
 
-    private void addProjectReqToMapByProject(Map<String, List<ProjectRequirementVO>> projectReqVOMap,
-            ProjectRequirementVO projectRequirementVO) {
-        if (!projectReqVOMap.containsKey(projectRequirementVO.getProjectName())) {
-            List<ProjectRequirementVO> projectRequirementVOs = new ArrayList<ProjectRequirementVO>();
-            projectReqVOMap.put(projectRequirementVO.getProjectName(), projectRequirementVOs);
+    private ProjectRequirementVO getProjectRequirementVOByProjectKey(
+            Map<String, ProjectRequirementVO> projectRequirementVOMap, Element eElement) {
+        String projectKey =
+                null != eElement.getElementsByTagName("ProjectKey").item(0) ? eElement
+                        .getElementsByTagName("ProjectKey").item(0).getTextContent() : null;
+        ProjectRequirementVO projectRequirementVO = null;
+        if (projectRequirementVOMap.containsKey(projectKey)) {
+            projectRequirementVO = projectRequirementVOMap.get(projectKey);
+        } else {
+            projectRequirementVO = new ProjectRequirementVO();
+            projectRequirementVOMap.put(projectKey, projectRequirementVO);
+            projectRequirementVO.setClientKey(null != eElement.getElementsByTagName("ClientKey").item(0) ? eElement
+                    .getElementsByTagName("ClientKey").item(0).getTextContent() : null);
+            projectRequirementVO.setProjectKey(null != eElement.getElementsByTagName("ProjectKey").item(0) ? eElement
+                    .getElementsByTagName("ProjectKey").item(0).getTextContent() : null);
+            projectRequirementVO.setCustomerName(null != eElement.getElementsByTagName("CustomerName").item(0)
+                    ? eElement.getElementsByTagName("CustomerName").item(0).getTextContent() : null);
+            projectRequirementVO.setProjectName(null != eElement.getElementsByTagName("ProjectName").item(0) ? eElement
+                    .getElementsByTagName("ProjectName").item(0).getTextContent() : null);
+            projectRequirementVO.setIsKeyProject(null != eElement.getElementsByTagName("IsKeyProject").item(0)
+                    ? eElement.getElementsByTagName("IsKeyProject").item(0).getTextContent() : null);
+            projectRequirementVO.setProjectDomain(null != eElement.getElementsByTagName("ProjectDomain").item(0)
+                    ? eElement.getElementsByTagName("ProjectDomain").item(0).getTextContent() : null);
+            projectRequirementVO.setProjectStartDate(null != eElement.getElementsByTagName("ProjectStartDate").item(0)
+                    ? NagarroResourceAllocatorUtility.stringToDate(eElement.getElementsByTagName("ProjectStartDate")
+                            .item(0).getTextContent()) : null);
+            projectRequirementVO.setProjectEndDate(null != eElement.getElementsByTagName("ProjectEndDate").item(0)
+                    ? NagarroResourceAllocatorUtility.stringToDate(eElement.getElementsByTagName("ProjectEndDate")
+                            .item(0).getTextContent()) : null);
         }
-        projectReqVOMap.get(projectRequirementVO.getProjectName()).add(projectRequirementVO);
+        return projectRequirementVO;
+    }
+
+    private ResourceRequirementVO createResourceRequirementVOByElement(Element eElement,
+            ProjectRequirementVO projectRequirementVO) {
+        ResourceRequirementVO resourceRequirementVO = new ResourceRequirementVO();
+        resourceRequirementVO.setRequestID(null != eElement.getElementsByTagName("RequestID").item(0) ? eElement
+                .getElementsByTagName("RequestID").item(0).getTextContent() : null);
+        resourceRequirementVO.setRole(null != eElement.getElementsByTagName("Role").item(0) ? eElement
+                .getElementsByTagName("Role").item(0).getTextContent() : null);
+        resourceRequirementVO.setIsKeyPosition(null != eElement.getElementsByTagName("IsKeyPosition").item(0)
+                ? eElement.getElementsByTagName("IsKeyPosition").item(0).getTextContent() : null);
+        resourceRequirementVO.setYearsOfExperience(null != eElement.getElementsByTagName("YearsOfExperience").item(0)
+                ? NagarroResourceAllocatorUtility.stringToFloat(eElement.getElementsByTagName("YearsOfExperience")
+                        .item(0).getTextContent()) : null);
+        resourceRequirementVO.setMandatorySkills(null != eElement.getElementsByTagName("MandatorySkills").item(0)
+                ? NagarroResourceAllocatorUtility.stringToList(eElement.getElementsByTagName("MandatorySkills").item(0)
+                        .getTextContent()) : null);
+        resourceRequirementVO.setClientCommunication(null != eElement.getElementsByTagName("ClientCommunication").item(
+                0) ? eElement.getElementsByTagName("ClientCommunication").item(0).getTextContent() : null);
+        resourceRequirementVO.setRequestStartDate(null != eElement.getElementsByTagName("RequestStartDate").item(0)
+                ? NagarroResourceAllocatorUtility.stringToDate(eElement.getElementsByTagName("RequestStartDate")
+                        .item(0).getTextContent()) : null);
+        resourceRequirementVO.setAllocationEndDate(null != eElement.getElementsByTagName("AllocationEndDate").item(0)
+                ? NagarroResourceAllocatorUtility.stringToDate(eElement.getElementsByTagName("AllocationEndDate")
+                        .item(0).getTextContent()) : null);
+        resourceRequirementVO.setProjectRequirementVO(projectRequirementVO);
+        resourceRequirementVO.setResourceInformationVOs();
+        return resourceRequirementVO;
     }
 
 }

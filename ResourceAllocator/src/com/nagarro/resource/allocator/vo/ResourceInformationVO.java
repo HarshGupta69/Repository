@@ -232,7 +232,7 @@ public class ResourceInformationVO {
         this.points += d;
     }
 
-    public void updatePoints(ProjectRequirementVO projectRequirementVO) {
+    public void updatePoints(ResourceRequirementVO resourceRequirementVO) {
         if (nagp.equalsIgnoreCase(AppConstants.Y)) {
             addPoints(0.3);
         }
@@ -241,15 +241,18 @@ public class ResourceInformationVO {
         } else if (rating.equalsIgnoreCase(AppConstants.A)) {
             addPoints(0.1);
         }
-        if (null != domainExperience && domainExperience.equalsIgnoreCase(projectRequirementVO.getProjectDomain())) {
+        if (null != domainExperience
+                && domainExperience
+                        .equalsIgnoreCase(resourceRequirementVO.getProjectRequirementVO().getProjectDomain())) {
             addPoints(0.2);
             if (null != previousCustomerExperience
-                    && previousCustomerExperience.contains(projectRequirementVO.getCustomerName())) {
+                    && previousCustomerExperience.contains(resourceRequirementVO.getProjectRequirementVO()
+                            .getCustomerName())) {
                 addPoints(0.3);
             }
         }
-        if (yearsOfExperience > projectRequirementVO.getYearsOfExperience()) {
-            addPoints((yearsOfExperience - projectRequirementVO.getYearsOfExperience()) * 0.05);
+        if (yearsOfExperience > resourceRequirementVO.getYearsOfExperience()) {
+            addPoints((yearsOfExperience - resourceRequirementVO.getYearsOfExperience()) * 0.05);
         }
     }
 

@@ -18,7 +18,7 @@ public class NagarroResourceAllocatorMain {
 
     public static Map<String, List<ResourceInformationVO>> resourceInfoMap = null;
 
-    public static Map<String, List<ProjectRequirementVO>> projectReqMap = null;
+    public static Map<String, ProjectRequirementVO> projectReqMap = null;
 
     /**
 	 * 

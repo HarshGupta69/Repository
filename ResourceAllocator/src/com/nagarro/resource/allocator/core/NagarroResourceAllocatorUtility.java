@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.nagarro.resource.allocator.main.NagarroResourceAllocatorMain;
-import com.nagarro.resource.allocator.vo.ProjectRequirementVO;
 import com.nagarro.resource.allocator.vo.ResourceInformationVO;
+import com.nagarro.resource.allocator.vo.ResourceRequirementVO;
 
 /**
  * @author harshitgupta
@@ -57,19 +57,19 @@ public class NagarroResourceAllocatorUtility {
     }
 
     public static List<ResourceInformationVO> getResourceInformationVOBySkillSet(
-            ProjectRequirementVO projectRequirementVO) {
+            ResourceRequirementVO resourceRequirementVO) {
         List<ResourceInformationVO> resourceInformationVOs = new ArrayList<ResourceInformationVO>();
-        for (String skill : projectRequirementVO.getMandatorySkills()) {
+        for (String skill : resourceRequirementVO.getMandatorySkills()) {
             if (null != NagarroResourceAllocatorMain.resourceInfoMap.get(skill)) {
                 for (ResourceInformationVO resourceInformationVO : NagarroResourceAllocatorMain.resourceInfoMap
                         .get(skill)) {
-                    if (resourceInformationVO.getSkills().containsAll(projectRequirementVO.getMandatorySkills())
+                    if (resourceInformationVO.getSkills().containsAll(resourceRequirementVO.getMandatorySkills())
                             && 0 < resourceInformationVO.getAvailableFromDate().compareTo(
-                                    projectRequirementVO.getRequestStartDate())
+                                    resourceRequirementVO.getRequestStartDate())
                             && !resourceInformationVOs.contains(resourceInformationVO)) {
                         ResourceInformationVO informationVO = new ResourceInformationVO(resourceInformationVO);
                         informationVO.addPoints(1);
-                        informationVO.updatePoints(projectRequirementVO);
+                        informationVO.updatePoints(resourceRequirementVO);
                         resourceInformationVOs.add(informationVO);
                     }
                 }
