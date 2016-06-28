@@ -3,6 +3,11 @@
  */
 package com.nagarro.resource.allocator.vo;
 
+import java.util.Date;
+import java.util.List;
+
+import com.nagarro.resource.allocator.core.AppConstants;
+
 /**
  * @author harshitgupta
  *
@@ -10,22 +15,37 @@ package com.nagarro.resource.allocator.vo;
 public class ResourceInformationVO {
 
     private String employeeId;
-    private String doj;
-    private String skills;
+    private Date doj;
+    private List<String> skills;
     private String domainExperience;
     private String rating;
     private String communicationsRating;
     private String nagp;
-    private String yearsOfExperience;
+    private float yearsOfExperience;
     private String currentRole;
-    private String availableFromDate;
-    private String previousCustomerExperience;
+    private Date availableFromDate;
+    private List<String> previousCustomerExperience;
+    private float points;
 
     /**
 	 * 
 	 */
     public ResourceInformationVO() {
 
+    }
+
+    public ResourceInformationVO(ResourceInformationVO resourceInformationVO) {
+        this.employeeId = resourceInformationVO.employeeId;
+        this.doj = resourceInformationVO.doj;
+        this.skills = resourceInformationVO.skills;
+        this.domainExperience = resourceInformationVO.domainExperience;
+        this.rating = resourceInformationVO.rating;
+        this.communicationsRating = resourceInformationVO.communicationsRating;
+        this.nagp = resourceInformationVO.nagp;
+        this.yearsOfExperience = resourceInformationVO.yearsOfExperience;
+        this.currentRole = resourceInformationVO.currentRole;
+        this.availableFromDate = resourceInformationVO.availableFromDate;
+        this.previousCustomerExperience = resourceInformationVO.previousCustomerExperience;
     }
 
     /**
@@ -46,7 +66,7 @@ public class ResourceInformationVO {
     /**
      * @return the doj
      */
-    public String getDoj() {
+    public Date getDoj() {
         return doj;
     }
 
@@ -54,14 +74,14 @@ public class ResourceInformationVO {
      * @param doj
      *            the doj to set
      */
-    public void setDoj(String doj) {
+    public void setDoj(Date doj) {
         this.doj = doj;
     }
 
     /**
      * @return the skills
      */
-    public String getSkills() {
+    public List<String> getSkills() {
         return skills;
     }
 
@@ -69,7 +89,7 @@ public class ResourceInformationVO {
      * @param skills
      *            the skills to set
      */
-    public void setSkills(String skills) {
+    public void setSkills(List<String> skills) {
         this.skills = skills;
     }
 
@@ -136,7 +156,7 @@ public class ResourceInformationVO {
     /**
      * @return the yearsOfExperience
      */
-    public String getYearsOfExperience() {
+    public float getYearsOfExperience() {
         return yearsOfExperience;
     }
 
@@ -144,7 +164,7 @@ public class ResourceInformationVO {
      * @param yearsOfExperience
      *            the yearsOfExperience to set
      */
-    public void setYearsOfExperience(String yearsOfExperience) {
+    public void setYearsOfExperience(float yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
 
@@ -166,7 +186,7 @@ public class ResourceInformationVO {
     /**
      * @return the availableFromDate
      */
-    public String getAvailableFromDate() {
+    public Date getAvailableFromDate() {
         return availableFromDate;
     }
 
@@ -174,23 +194,76 @@ public class ResourceInformationVO {
      * @param availableFromDate
      *            the availableFromDate to set
      */
-    public void setAvailableFromDate(String availableFromDate) {
+    public void setAvailableFromDate(Date availableFromDate) {
         this.availableFromDate = availableFromDate;
     }
 
     /**
      * @return the previousCustomerExperience
      */
-    public String getPreviousCustomerExperience() {
+    public List<String> getPreviousCustomerExperience() {
         return previousCustomerExperience;
     }
 
     /**
-     * @param previousCustomerExperience
+     * @param list
      *            the previousCustomerExperience to set
      */
-    public void setPreviousCustomerExperience(String previousCustomerExperience) {
+    public void setPreviousCustomerExperience(List<String> previousCustomerExperience) {
         this.previousCustomerExperience = previousCustomerExperience;
+    }
+
+    /**
+     * @return the points
+     */
+    public float getPoints() {
+        return points;
+    }
+
+    /**
+     * @param points
+     *            the points to set
+     */
+    public void setPoints(float points) {
+        this.points = points;
+    }
+
+    public void addPoints(double d) {
+        this.points += d;
+    }
+
+    public void updatePoints(ProjectRequirementVO projectRequirementVO) {
+        if (nagp.equalsIgnoreCase(AppConstants.Y)) {
+            addPoints(0.3);
+        }
+        if (rating.equalsIgnoreCase(AppConstants.A_PLUS)) {
+            addPoints(0.2);
+        } else if (rating.equalsIgnoreCase(AppConstants.A)) {
+            addPoints(0.1);
+        }
+        if (null != domainExperience && domainExperience.equalsIgnoreCase(projectRequirementVO.getProjectDomain())) {
+            addPoints(0.2);
+            if (null != previousCustomerExperience
+                    && previousCustomerExperience.contains(projectRequirementVO.getCustomerName())) {
+                addPoints(0.3);
+            }
+        }
+        if (yearsOfExperience > projectRequirementVO.getYearsOfExperience()) {
+            addPoints((yearsOfExperience - projectRequirementVO.getYearsOfExperience()) * 0.05);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ResourceInformationVO [employeeId=" + employeeId + ", doj=" + doj + ", skills=" + skills
+                + ", domainExperience=" + domainExperience + ", rating=" + rating + ", communicationsRating="
+                + communicationsRating + ", nagp=" + nagp + ", yearsOfExperience=" + yearsOfExperience
+                + ", currentRole=" + currentRole + ", availableFromDate=" + availableFromDate
+                + ", previousCustomerExperience=" + previousCustomerExperience + ", points=" + points + "]";
     }
 
 }

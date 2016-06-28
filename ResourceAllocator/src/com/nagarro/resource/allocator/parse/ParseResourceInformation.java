@@ -6,7 +6,9 @@ package com.nagarro.resource.allocator.parse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,6 +20,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.nagarro.resource.allocator.core.NagarroResourceAllocatorUtility;
 import com.nagarro.resource.allocator.vo.ResourceInformationVO;
 
 /**
@@ -33,8 +36,8 @@ public class ParseResourceInformation {
 
     }
 
-    public List<ResourceInformationVO> parseResourceInformation() {
-        List<ResourceInformationVO> resourceInfoVOList = new ArrayList<ResourceInformationVO>();
+    public Map<String, List<ResourceInformationVO>> parseResourceInformation() {
+        Map<String, List<ResourceInformationVO>> resourceInfoVOMap = new HashMap<String, List<ResourceInformationVO>>();
         try {
             File xmlFile = new File("resources.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -46,16 +49,18 @@ public class ParseResourceInformation {
             System.out.println("---------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                // System.out.println("\nCurrent Element :" + nNode.getNodeName());
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     ResourceInformationVO resourceInfoVO = new ResourceInformationVO();
                     resourceInfoVO.setEmployeeId(null != eElement.getElementsByTagName("EmployeeID").item(0) ? eElement
                             .getElementsByTagName("EmployeeID").item(0).getTextContent() : null);
-                    resourceInfoVO.setDoj(null != eElement.getElementsByTagName("DOJ").item(0) ? eElement
-                            .getElementsByTagName("DOJ").item(0).getTextContent() : null);
-                    resourceInfoVO.setSkills(null != eElement.getElementsByTagName("Skills").item(0) ? eElement
-                            .getElementsByTagName("Skills").item(0).getTextContent() : null);
+                    resourceInfoVO.setDoj(null != eElement.getElementsByTagName("DOJ").item(0)
+                            ? NagarroResourceAllocatorUtility.stringToDate(eElement.getElementsByTagName("DOJ").item(0)
+                                    .getTextContent()) : null);
+                    resourceInfoVO.setSkills(null != eElement.getElementsByTagName("Skills").item(0)
+                            ? NagarroResourceAllocatorUtility.stringToList(eElement.getElementsByTagName("Skills")
+                                    .item(0).getTextContent()) : null);
                     resourceInfoVO.setDomainExperience(null != eElement.getElementsByTagName("DomainExperience")
                             .item(0) ? eElement.getElementsByTagName("DomainExperience").item(0).getTextContent()
                             : null);
@@ -67,22 +72,34 @@ public class ParseResourceInformation {
                     resourceInfoVO.setNagp(null != eElement.getElementsByTagName("NAGP").item(0) ? eElement
                             .getElementsByTagName("NAGP").item(0).getTextContent() : null);
                     resourceInfoVO.setYearsOfExperience(null != eElement.getElementsByTagName("YearsOfExperience")
-                            .item(0) ? eElement.getElementsByTagName("YearsOfExperience").item(0).getTextContent()
-                            : null);
+                            .item(0) ? NagarroResourceAllocatorUtility.stringToFloat(eElement
+                            .getElementsByTagName("YearsOfExperience").item(0).getTextContent()) : null);
                     resourceInfoVO.setCurrentRole(null != eElement.getElementsByTagName("CurrentRole").item(0)
                             ? eElement.getElementsByTagName("CurrentRole").item(0).getTextContent() : null);
                     resourceInfoVO.setPreviousCustomerExperience(null != eElement.getElementsByTagName(
-                            "PreviousCustomerExperience").item(0) ? eElement
-                            .getElementsByTagName("PreviousCustomerExperience").item(0).getTextContent() : null);
+                            "PreviousCustomerExperience").item(0) ? NagarroResourceAllocatorUtility
+                            .stringToList(eElement.getElementsByTagName("PreviousCustomerExperience").item(0)
+                                    .getTextContent()) : null);
                     resourceInfoVO.setAvailableFromDate(null != eElement.getElementsByTagName("AvailableFromDate")
-                            .item(0) ? eElement.getElementsByTagName("AvailableFromDate").item(0).getTextContent()
-                            : null);
-                    resourceInfoVOList.add(resourceInfoVO);
+                            .item(0) ? NagarroResourceAllocatorUtility.stringToDate(eElement
+                            .getElementsByTagName("AvailableFromDate").item(0).getTextContent()) : null);
+                    addResourceToMapBySkill(resourceInfoVOMap, resourceInfoVO);
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-        return resourceInfoVOList;
+        return resourceInfoVOMap;
+    }
+
+    private void addResourceToMapBySkill(Map<String, List<ResourceInformationVO>> resourceInfoVOMap,
+            ResourceInformationVO resourceInformationVO) {
+        for (String skill : resourceInformationVO.getSkills()) {
+            if (!resourceInfoVOMap.containsKey(skill)) {
+                List<ResourceInformationVO> resourceInformationVOs = new ArrayList<ResourceInformationVO>();
+                resourceInfoVOMap.put(skill, resourceInformationVOs);
+            }
+            resourceInfoVOMap.get(skill).add(resourceInformationVO);
+        }
     }
 }
