@@ -37,7 +37,7 @@ public class ParseProjectInformation {
     }
 
     public Map<String, List<ProjectRequirementVO>> parseProjectRequirement() {
-        Map<String, List<ProjectRequirementVO>> projectReqMap =  new HashMap<String, List<ProjectRequirementVO>>();
+        Map<String, List<ProjectRequirementVO>> projectReqMap = new HashMap<String, List<ProjectRequirementVO>>();
         try {
             File xmlFile = new File("openings.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

@@ -9,11 +9,11 @@ package com.nagarro.resource.allocator.output;
  */
 public class NagarroResourceAllocatorOutput {
 
-	/**
+    /**
 	 * 
 	 */
-	public NagarroResourceAllocatorOutput() {
-		
-	}
+    public NagarroResourceAllocatorOutput() {
+
+    }
 
 }

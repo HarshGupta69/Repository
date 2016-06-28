@@ -253,7 +253,8 @@ public class ResourceInformationVO {
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override

@@ -294,7 +294,8 @@ public class ProjectRequirementVO {
         this.resourceInformationVOs = NagarroResourceAllocatorUtility.getResourceInformationVOBySkillSet(this);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override

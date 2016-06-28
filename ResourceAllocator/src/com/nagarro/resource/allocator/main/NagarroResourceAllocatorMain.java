@@ -43,8 +43,8 @@ public class NagarroResourceAllocatorMain {
         System.out.println("Total Project Requirement Size: " + projectReqMap.size());
         System.out.println("Total Time Taking to Read Project Requirement in Milli Sec: "
                 + (endTimeProjectReq - startTimeProjectReq));
-//        System.out.println(resourceInfoMap);
-//        System.out.println(projectReqMap);
+        // System.out.println(resourceInfoMap);
+        // System.out.println(projectReqMap);
     }
 
 }

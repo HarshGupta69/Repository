@@ -9,11 +9,11 @@ package com.nagarro.resource.allocator.core;
  */
 public class NagarroResourceAllocatorCore {
 
-	/**
+    /**
 	 * 
 	 */
-	public NagarroResourceAllocatorCore() {
+    public NagarroResourceAllocatorCore() {
 
-	}
+    }
 
 }

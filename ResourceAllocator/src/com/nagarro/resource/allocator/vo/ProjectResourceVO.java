@@ -9,11 +9,11 @@ package com.nagarro.resource.allocator.vo;
  */
 public class ProjectResourceVO {
 
-	/**
+    /**
 	 * 
 	 */
-	public ProjectResourceVO() {
-		
-	}
+    public ProjectResourceVO() {
+
+    }
 
 }
