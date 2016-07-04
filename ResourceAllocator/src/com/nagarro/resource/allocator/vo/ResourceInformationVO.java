@@ -16,11 +16,11 @@ public class ResourceInformationVO {
 
     private String employeeId;
     private Date doj;
-    private List<String> skills;
+    private SkillSetVO skillSetVO;
     private String domainExperience;
     private String rating;
     private String communicationsRating;
-    private String nagp;
+    private boolean nagp;
     private float yearsOfExperience;
     private String currentRole;
     private Date availableFromDate;
@@ -37,7 +37,7 @@ public class ResourceInformationVO {
     public ResourceInformationVO(ResourceInformationVO resourceInformationVO) {
         this.employeeId = resourceInformationVO.employeeId;
         this.doj = resourceInformationVO.doj;
-        this.skills = resourceInformationVO.skills;
+        this.skillSetVO = resourceInformationVO.skillSetVO;
         this.domainExperience = resourceInformationVO.domainExperience;
         this.rating = resourceInformationVO.rating;
         this.communicationsRating = resourceInformationVO.communicationsRating;
@@ -76,21 +76,6 @@ public class ResourceInformationVO {
      */
     public void setDoj(Date doj) {
         this.doj = doj;
-    }
-
-    /**
-     * @return the skills
-     */
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    /**
-     * @param skills
-     *            the skills to set
-     */
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
     }
 
     /**
@@ -141,7 +126,7 @@ public class ResourceInformationVO {
     /**
      * @return the nagp
      */
-    public String getNagp() {
+    public boolean getNagp() {
         return nagp;
     }
 
@@ -149,7 +134,7 @@ public class ResourceInformationVO {
      * @param nagp
      *            the nagp to set
      */
-    public void setNagp(String nagp) {
+    public void setNagp(boolean nagp) {
         this.nagp = nagp;
     }
 
@@ -232,27 +217,14 @@ public class ResourceInformationVO {
         this.points += d;
     }
 
-    public void updatePoints(ResourceRequirementVO resourceRequirementVO) {
-        if (nagp.equalsIgnoreCase(AppConstants.Y)) {
+    public void initialPoints() {
+        if (nagp) {
             addPoints(0.3);
         }
         if (rating.equalsIgnoreCase(AppConstants.A_PLUS)) {
             addPoints(0.2);
         } else if (rating.equalsIgnoreCase(AppConstants.A)) {
             addPoints(0.1);
-        }
-        if (null != domainExperience
-                && domainExperience
-                        .equalsIgnoreCase(resourceRequirementVO.getProjectRequirementVO().getProjectDomain())) {
-            addPoints(0.2);
-            if (null != previousCustomerExperience
-                    && previousCustomerExperience.contains(resourceRequirementVO.getProjectRequirementVO()
-                            .getCustomerName())) {
-                addPoints(0.3);
-            }
-        }
-        if (yearsOfExperience > resourceRequirementVO.getYearsOfExperience()) {
-            addPoints((yearsOfExperience - resourceRequirementVO.getYearsOfExperience()) * 0.05);
         }
     }
 
@@ -262,11 +234,59 @@ public class ResourceInformationVO {
      */
     @Override
     public String toString() {
-        return "ResourceInformationVO [employeeId=" + employeeId + ", doj=" + doj + ", skills=" + skills
+        return "ResourceInformationVO [employeeId=" + employeeId + ", doj=" + doj + ", skillSetVO=" + skillSetVO
                 + ", domainExperience=" + domainExperience + ", rating=" + rating + ", communicationsRating="
                 + communicationsRating + ", nagp=" + nagp + ", yearsOfExperience=" + yearsOfExperience
                 + ", currentRole=" + currentRole + ", availableFromDate=" + availableFromDate
                 + ", previousCustomerExperience=" + previousCustomerExperience + ", points=" + points + "]";
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((employeeId == null) ? 0 : employeeId.hashCode());
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ResourceInformationVO other = (ResourceInformationVO) obj;
+        if (employeeId == null) {
+            if (other.employeeId != null)
+                return false;
+        } else if (!employeeId.equals(other.employeeId))
+            return false;
+        return true;
+    }
+
+    /**
+     * @return the skillSetVO
+     */
+    public SkillSetVO getSkillSetVO() {
+        return skillSetVO;
+    }
+
+    /**
+     * @param skillSetVO
+     *            the skillSetVO to set
+     */
+    public void setSkillSetVO(SkillSetVO skillSetVO) {
+        this.skillSetVO = skillSetVO;
     }
 
 }

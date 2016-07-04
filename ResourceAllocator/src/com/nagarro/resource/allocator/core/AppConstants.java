@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
  */
 public class AppConstants {
 
-    public final static SimpleDateFormat FORMATTOR = new SimpleDateFormat("dd-mm-yyyy");
+    public final static SimpleDateFormat FORMATTOR = new SimpleDateFormat("dd-MM-yyyy");
 
     public final static String BLANK = "";
 
@@ -20,6 +20,8 @@ public class AppConstants {
     public final static String A_PLUS = "A+";
 
     public final static String A = "A";
+
+    public final static double MAX_AVERAGE_SCORE = 1.5;
 
     /**
      * 

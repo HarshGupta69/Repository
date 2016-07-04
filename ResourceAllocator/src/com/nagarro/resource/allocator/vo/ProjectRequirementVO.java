@@ -3,9 +3,9 @@
  */
 package com.nagarro.resource.allocator.vo;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
+import com.nagarro.resource.allocator.core.NagarroResourceAllocatorUtility;
 
 /**
  * @author harshitgupta
@@ -24,11 +24,18 @@ public class ProjectRequirementVO {
     private String projectKey;
     private String customerName;
     private String projectName;
-    private String isKeyProject;
+    private boolean isKeyProject;
     private String projectDomain;
     private Date projectStartDate;
     private Date projectEndDate;
-    private List<ResourceRequirementVO> resourceRequirementVOs = new ArrayList<ResourceRequirementVO>();
+    private String requestID;
+    private String role;
+    private boolean isKeyPosition;
+    private float yearsOfExperience;
+    private SkillSetVO mandatorySkills;
+    private String clientCommunication;
+    private Date requestStartDate;
+    private Date allocationEndDate;
 
     /**
      * @return the clientKey
@@ -93,7 +100,7 @@ public class ProjectRequirementVO {
     /**
      * @return the isKeyProject
      */
-    public String getIsKeyProject() {
+    public boolean getIsKeyProject() {
         return isKeyProject;
     }
 
@@ -101,7 +108,7 @@ public class ProjectRequirementVO {
      * @param isKeyProject
      *            the isKeyProject to set
      */
-    public void setIsKeyProject(String isKeyProject) {
+    public void setIsKeyProject(Boolean isKeyProject) {
         this.isKeyProject = isKeyProject;
     }
 
@@ -151,18 +158,138 @@ public class ProjectRequirementVO {
     }
 
     /**
-     * @return the resourceRequirementVOs
+     * @return the requestID
      */
-    public List<ResourceRequirementVO> getResourceRequirementVOs() {
-        return resourceRequirementVOs;
+    public String getRequestID() {
+        return requestID;
     }
 
     /**
-     * @param resourceRequirementVOs
-     *            the resourceRequirementVOs to set
+     * @return the requestID
      */
-    public void setResourceRequirementVOs(List<ResourceRequirementVO> resourceRequirementVOs) {
-        this.resourceRequirementVOs = resourceRequirementVOs;
+    public int getRequestIDInt() {
+        return Integer.parseInt(requestID.trim());
+    }
+
+    /**
+     * @param requestID
+     *            the requestID to set
+     */
+    public void setRequestID(String requestID) {
+        this.requestID = requestID;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role
+     *            the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    /**
+     * @return the isKeyPosition
+     */
+    public boolean isKeyPosition() {
+        return isKeyPosition;
+    }
+
+    /**
+     * @param isKeyPosition
+     *            the isKeyPosition to set
+     */
+    public void setKeyPosition(boolean isKeyPosition) {
+        this.isKeyPosition = isKeyPosition;
+    }
+
+    /**
+     * @return the yearsOfExperience
+     */
+    public float getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    /**
+     * @param yearsOfExperience
+     *            the yearsOfExperience to set
+     */
+    public void setYearsOfExperience(float yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    /**
+     * @return the mandatorySkills
+     */
+    public SkillSetVO getMandatorySkills() {
+        return mandatorySkills;
+    }
+
+    /**
+     * @param mandatorySkills
+     *            the mandatorySkills to set
+     */
+    public void setMandatorySkills(SkillSetVO mandatorySkills) {
+        this.mandatorySkills = mandatorySkills;
+    }
+
+    /**
+     * @return the clientCommunication
+     */
+    public String getClientCommunication() {
+        return clientCommunication;
+    }
+
+    /**
+     * @param clientCommunication
+     *            the clientCommunication to set
+     */
+    public void setClientCommunication(String clientCommunication) {
+        this.clientCommunication = clientCommunication;
+    }
+
+    /**
+     * @return the requestStartDate
+     */
+    public Date getRequestStartDate() {
+        return requestStartDate;
+    }
+
+    /**
+     * @param requestStartDate
+     *            the requestStartDate to set
+     */
+    public void setRequestStartDate(Date requestStartDate) {
+        this.requestStartDate = requestStartDate;
+    }
+
+    /**
+     * @return the allocationEndDate
+     */
+    public Date getAllocationEndDate() {
+        return allocationEndDate;
+    }
+
+    /**
+     * @param allocationEndDate
+     *            the allocationEndDate to set
+     */
+    public void setAllocationEndDate(Date allocationEndDate) {
+        this.allocationEndDate = allocationEndDate;
+    }
+
+    /**
+     * @param isKeyProject
+     *            the isKeyProject to set
+     */
+    public void setKeyProject(boolean isKeyProject) {
+        this.isKeyProject = isKeyProject;
     }
 
     /*
@@ -174,7 +301,22 @@ public class ProjectRequirementVO {
         return "ProjectRequirementVO [clientKey=" + clientKey + ", projectKey=" + projectKey + ", customerName="
                 + customerName + ", projectName=" + projectName + ", isKeyProject=" + isKeyProject + ", projectDomain="
                 + projectDomain + ", projectStartDate=" + projectStartDate + ", projectEndDate=" + projectEndDate
-                + ", resourceRequirementVOs=" + resourceRequirementVOs + "]";
+                + ", requestID=" + requestID + ", role=" + role + ", isKeyPosition=" + isKeyPosition
+                + ", yearsOfExperience=" + yearsOfExperience + ", mandatorySkills=" + mandatorySkills
+                + ", clientCommunication=" + clientCommunication + ", requestStartDate=" + requestStartDate
+                + ", allocationEndDate=" + allocationEndDate + "]";
+    }
+
+    public int getDaysOfRequirement() {
+        return NagarroResourceAllocatorUtility.getDaysDifference(requestStartDate, allocationEndDate);
+    }
+
+    public boolean isRequirementCorrect() {
+        boolean flag = true;
+        if (getDaysOfRequirement() < 0) {
+            flag = false;
+        }
+        return flag;
     }
 
 }
